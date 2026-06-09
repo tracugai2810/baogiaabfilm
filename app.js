@@ -269,6 +269,7 @@ function generateQuote() {
   const customerAddress = document.getElementById('customer-address').value || '';
   const quoteDate = document.getElementById('quote-date').value || getTodayFormatted();
   const vatRate = parseFloat(document.getElementById('vat-rate').value) || 8;
+  const customNotes = document.getElementById('custom-notes').value.trim();
 
   // Filter valid rows
   const validRows = filmRows.filter(r => r.filmCode && r.price && r.area);
@@ -390,6 +391,11 @@ function generateQuote() {
 
   // Notes
   const descriptions = uniqueFilms.map(code => FILM_DATA[code].description).filter(Boolean);
+  // Custom notes from user
+  const customNotesItems = customNotes
+    ? customNotes.split('\n').filter(line => line.trim()).map(line => `<li>${line.trim()}</li>`).join('')
+    : '';
+
   const notesHTML = `
     <div class="quote-notes">
       <h4>Ghi chú:</h4>
@@ -397,9 +403,23 @@ function generateQuote() {
         ${descriptions.map(d => `<li>${d}</li>`).join('')}
         <li>Bảo hành 10 năm các vấn đề bong, tróc, nổ, rộp... liên quan tới chất lượng của film.</li>
         <li>Đơn giá đã bao gồm chi phí thi công hoàn thiện tại khu vực Thành phố Hà Nội.</li>
+        ${customNotesItems}
       </ul>
     </div>
   `;
+
+  let filmTypeStr = "";
+  let titleStr = "";
+  if (heatFilms.length > 0 && ppfFilms.length > 0) {
+    filmTypeStr = "phim cách nhiệt & phim bảo vệ nội thất";
+    titleStr = "BÁO GIÁ PHIM CÁCH NHIỆT & PHIM BẢO VỆ NỘI THẤT";
+  } else if (heatFilms.length > 0) {
+    filmTypeStr = "phim cách nhiệt";
+    titleStr = "BÁO GIÁ PHIM CÁCH NHIỆT NHÀ KÍNH";
+  } else if (ppfFilms.length > 0) {
+    filmTypeStr = "phim bảo vệ nội thất";
+    titleStr = "BÁO GIÁ PHIM BẢO VỆ NỘI THẤT";
+  }
 
   // Assemble full quote
   const quoteHTML = `
@@ -415,7 +435,7 @@ function generateQuote() {
       </div>
     </div>
     <div class="quote-body">
-      <h2 class="quote-title">Báo Giá Phim Cách Nhiệt Nhà Kính</h2>
+      <h2 class="quote-title">${titleStr}</h2>
 
       <div class="quote-customer-info">
         <p><strong>Khách hàng:</strong> ${customerName}</p>
@@ -425,8 +445,9 @@ function generateQuote() {
       </div>
 
       <p style="font-size: 0.88rem; color: #444; margin-bottom: 16px; line-height: 1.7;">
-        Lời đầu tiên xin thay mặt Công ty gửi tới Quý khách hàng lời chúc sức khỏe và lời chào hợp tác. 
-        Theo yêu cầu của Quý khách hàng chúng tôi xin gửi bảng giá dự kiến dán phim cách nhiệt theo diện tích khảo sát như sau:
+        Kính gửi Quý khách hàng <strong>${customerName}</strong>,<br><br>
+        Lời đầu tiên, xin thay mặt Công ty TNHH AB Films, chúng tôi chân thành gửi đến Quý khách hàng lời chúc sức khỏe, hạnh phúc và lời chào hợp tác trân trọng nhất. Cảm ơn Quý khách đã quan tâm và tin tưởng sử dụng dịch vụ của chúng tôi.<br><br>
+        Dựa trên yêu cầu và thực tế khảo sát, chúng tôi xin gửi đến Quý khách bảng báo giá dự kiến cho hạng mục thi công dán <strong>${filmTypeStr}</strong> chi tiết như sau:
       </p>
 
       ${specsTableHTML}
@@ -487,30 +508,46 @@ async function exportPDF() {
   // Show loading
   loading.classList.add('active');
 
+  // Create a clone to render independently of the scrollable overlay
+  // This fixes html2canvas cutting off elements in scrollable divs
+  const cloneContainer = document.createElement('div');
+  cloneContainer.style.position = 'absolute';
+  cloneContainer.style.top = '-9999px';
+  cloneContainer.style.left = '0';
+  cloneContainer.style.width = '900px';
+  cloneContainer.style.background = '#fff';
+  
+  const clone = element.cloneNode(true);
+  clone.removeAttribute('id');
+  cloneContainer.appendChild(clone);
+  document.body.appendChild(cloneContainer);
+
   const opt = {
-    margin: [5, 5, 5, 5],
+    margin: [10, 5, 10, 5],
     filename: `${fileName}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: {
       scale: 2,
       useCORS: true,
-      letterRendering: true,
-      logging: false
+      logging: false,
+      scrollY: 0,
+      windowWidth: 900
     },
     jsPDF: {
       unit: 'mm',
       format: 'a4',
       orientation: 'portrait'
     },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    pagebreak: { mode: ['css', 'legacy'] }
   };
 
   try {
-    await html2pdf().set(opt).from(element).save();
+    await html2pdf().set(opt).from(cloneContainer).save();
   } catch (err) {
     console.error('PDF export error:', err);
     alert('Có lỗi khi xuất PDF. Vui lòng thử lại!');
   } finally {
+    document.body.removeChild(cloneContainer);
     loading.classList.remove('active');
   }
 }
