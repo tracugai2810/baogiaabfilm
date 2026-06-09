@@ -576,6 +576,12 @@ body::before {
   border-collapse: collapse;
   margin-bottom: 16px;
   font-size: 0.82rem;
+  page-break-inside: auto;
+}
+
+.quote-table tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .quote-table th {
@@ -629,20 +635,23 @@ body::before {
 
 /* Film images in quote */
 .quote-film-images {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  display: block;
+  text-align: center;
   margin: 16px 0;
 }
 
 .quote-film-image-card {
+  display: block;
+  margin: 0 auto 24px auto;
   text-align: center;
+  width: 100%;
+  max-width: 380px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .quote-film-image-card img {
   width: 100%;
-  max-width: 340px;
   height: auto;
   border-radius: 8px;
   border: 2px solid #e5e7eb;
@@ -669,6 +678,8 @@ body::before {
   background: #f8f9fa;
   border-radius: 8px;
   border-left: 4px solid #f59e0b;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .quote-notes h4 {
