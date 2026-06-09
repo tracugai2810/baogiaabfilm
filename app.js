@@ -497,22 +497,34 @@ function closeQuoteOverlay() {
   document.body.style.overflow = '';
 }
 
-// ============ EXPORT PDF ============
-function exportPDF() {
+// ============ EXPORT IMAGE ============
+function exportImage() {
   const customerName = document.getElementById('customer-name').value || 'KHACH_HANG';
-  const fileName = generateFileName(customerName);
+  const fileName = generateFileName(customerName) + '.png';
 
-  // Đổi title trang tạm thời để trình duyệt lấy làm tên file PDF khi in
-  const originalTitle = document.title;
-  document.title = fileName;
+  const loading = document.getElementById('loading-overlay');
+  loading.classList.add('active');
 
-  // Dùng công cụ in (Save as PDF) của chính trình duyệt để PDF nét và không bị vỡ layout
-  window.print();
+  const quoteElement = document.getElementById('quote-preview');
 
-  // Trả lại title sau 1 giây
+  // Đợi 1 chút để UI cập nhật (nếu vừa mở overlay)
   setTimeout(() => {
-    document.title = originalTitle;
-  }, 1000);
+    html2canvas(quoteElement, {
+      scale: 2, // Tăng độ phân giải cho nét
+      useCORS: true, // Cho phép load ảnh từ các nguồn khác
+      backgroundColor: '#ffffff'
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = fileName;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      loading.classList.remove('active');
+    }).catch(err => {
+      console.error('Lỗi khi xuất ảnh:', err);
+      alert('Có lỗi xảy ra khi xuất ảnh. Vui lòng thử lại!');
+      loading.classList.remove('active');
+    });
+  }, 300);
 }
 
 // ============ INIT ============

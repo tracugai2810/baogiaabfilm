@@ -74,8 +74,8 @@
         <button class="btn-primary" onclick="generateQuote()">
           <span>👁</span> Xem Báo Giá
         </button>
-        <button class="btn-secondary" onclick="generateQuote(); setTimeout(exportPDF, 500)">
-          <span>📄</span> Xuất PDF Ngay
+        <button class="btn-secondary" onclick="generateQuote(); setTimeout(exportImage, 500)">
+          <span>🖼️</span> Xuất Ảnh Ngay
         </button>
       </div>
     </div>
@@ -86,8 +86,8 @@
   <div class="quote-overlay" id="quote-overlay">
     <div class="quote-overlay-inner">
       <div class="quote-close-btn">
-        <button class="btn-export" onclick="exportPDF()">
-          📄 Xuất PDF
+        <button class="btn-export" onclick="exportImage()">
+          🖼️ Xuất Ảnh
         </button>
         <button class="btn-close-overlay" onclick="closeQuoteOverlay()">
           ✕ Đóng
@@ -105,6 +105,7 @@
   </div>
 
   <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="app.js"></script>
 
 </body>
