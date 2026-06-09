@@ -560,6 +560,10 @@ body::before {
   color: #1a1a2e;
 }
 
+.quote-customer-info .full-width-address {
+  grid-column: 1 / -1;
+}
+
 .quote-section-title {
   font-size: 0.95rem;
   font-weight: 700;
@@ -639,7 +643,7 @@ body::before {
 .quote-film-images {
   display: block;
   text-align: center;
-  margin: 16px 0;
+  margin: 28px 0 16px 0;
 }
 
 .quote-film-image-card {
@@ -711,6 +715,11 @@ body::before {
   left: 0;
   color: #c0272d;
   font-weight: 700;
+}
+
+.quote-notes-footer-wrapper {
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .quote-footer {

@@ -440,8 +440,7 @@ function generateQuote() {
       <div class="quote-customer-info">
         <p><strong>Khách hàng:</strong> ${customerName}</p>
         <p><strong>Số điện thoại:</strong> ${customerPhone}</p>
-        <p><strong>Địa chỉ công trình:</strong> ${customerAddress}</p>
-        <p></p>
+        <p class="full-width-address"><strong>Địa chỉ công trình:</strong> ${customerAddress}</p>
       </div>
 
       <p style="font-size: 0.88rem; color: #444; margin-bottom: 16px; line-height: 1.7;">
@@ -477,10 +476,11 @@ function generateQuote() {
         </tbody>
       </table>
 
-      ${notesHTML}
-
-      <div class="quote-footer">
-        ${formatDateVN(quoteDate)}
+      <div class="quote-notes-footer-wrapper">
+        ${notesHTML}
+        <div class="quote-footer">
+          ${formatDateVN(quoteDate)}
+        </div>
       </div>
     </div>
   `;
