@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tạo báo giá phim cách nhiệt nhà kính - Công ty TNHH AB Films">
+  <title>Báo Giá - AB Films | Phim Cách Nhiệt Nhà Kính</title>
+  <link rel="icon" type="image/png" href="images/Logo-ABfilm.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-content">
+      <img src="images/Logo-ABfilm.png" alt="AB Films Logo" class="header-logo">
+      <div class="header-info">
+        <h1>CÔNG TY TNHH AB FILMS</h1>
+        <p>Hệ thống tạo báo giá phim cách nhiệt nhà kính</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN FORM -->
+  <main class="main-container">
+
+    <!-- Customer Info Section -->
+    <div class="section-card">
+      <h2 class="section-title"><span class="icon">📋</span> Thông Tin Khách Hàng</h2>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="customer-name">Tên khách hàng</label>
+          <input type="text" id="customer-name" placeholder="Nhập tên khách hàng">
+        </div>
+        <div class="form-group">
+          <label for="customer-phone">Số điện thoại</label>
+          <input type="tel" id="customer-phone" placeholder="Nhập số điện thoại">
+        </div>
+        <div class="form-group">
+          <label for="customer-address">Địa chỉ công trình</label>
+          <input type="text" id="customer-address" placeholder="Nhập địa chỉ công trình">
+        </div>
+        <div class="form-group">
+          <label for="quote-date">Ngày báo giá</label>
+          <input type="date" id="quote-date">
+        </div>
+      </div>
+    </div>
+
+    <!-- Film Selection Section -->
+    <div class="section-card">
+      <h2 class="section-title"><span class="icon">🎬</span> Chọn Mã Film & Nhập Giá</h2>
+      <div class="film-rows-container" id="film-rows">
+        <!-- Film rows will be rendered by JS -->
+      </div>
+      <button class="btn-add-row" onclick="addRow()">
+        <span>＋</span> Thêm dòng film
+      </button>
+      <div class="vat-section">
+        <label for="vat-rate">Thuế VAT:</label>
+        <input type="number" id="vat-rate" value="8" min="0" max="100" step="1">
+        <span>%</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="section-card">
+      <h2 class="section-title"><span class="icon">⚡</span> Tạo Báo Giá</h2>
+      <div class="actions-bar">
+        <button class="btn-primary" onclick="generateQuote()">
+          <span>👁</span> Xem Báo Giá
+        </button>
+        <button class="btn-secondary" onclick="generateQuote(); setTimeout(exportPDF, 500)">
+          <span>📄</span> Xuất PDF Ngay
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- QUOTE PREVIEW OVERLAY -->
+  <div class="quote-overlay" id="quote-overlay">
+    <div class="quote-overlay-inner">
+      <div class="quote-close-btn">
+        <button class="btn-export" onclick="exportPDF()">
+          📄 Xuất PDF
+        </button>
+        <button class="btn-close-overlay" onclick="closeQuoteOverlay()">
+          ✕ Đóng
+        </button>
+      </div>
+      <div id="quote-preview">
+        <!-- Quote preview will be rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
