@@ -290,7 +290,7 @@ function generateQuote() {
   if (heatFilms.length > 0) {
     specsTableHTML += `
       <h3 class="quote-section-title">Thông Số Các Mã Film Cách Nhiệt</h3>
-      <table class="quote-table">
+      <table class="quote-table" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;">
         <thead>
           <tr>
             <th>Mã Film</th>
@@ -324,7 +324,7 @@ function generateQuote() {
   if (ppfFilms.length > 0) {
     specsTableHTML += `
       <h3 class="quote-section-title">Thông Số Film Bảo Vệ Nội Thất</h3>
-      <table class="quote-table">
+      <table class="quote-table" style="-webkit-print-color-adjust: exact; print-color-adjust: exact;">
         <thead>
           <tr>
             <th>Mã Film</th>

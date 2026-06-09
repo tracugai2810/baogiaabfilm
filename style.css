@@ -568,6 +568,8 @@ body::before {
   padding-bottom: 6px;
   border-bottom: 2px solid #e5e7eb;
   text-transform: uppercase;
+  page-break-after: avoid;
+  break-after: avoid;
 }
 
 /* Quote Tables */
@@ -813,6 +815,11 @@ body::before {
 
 /* ============ PRINT STYLES ============ */
 @media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
   body {
     background: #fff !important;
     color: #000 !important;
