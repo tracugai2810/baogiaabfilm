@@ -441,7 +441,7 @@ function generateQuote() {
         <p><strong>Khách hàng:</strong> ${customerName}</p>
         <p><strong>Số điện thoại:</strong> ${customerPhone}</p>
         <p><strong>Địa chỉ công trình:</strong> ${customerAddress}</p>
-        <p><strong>Ngày:</strong> ${formatDateVN(quoteDate)}</p>
+        <p></p>
       </div>
 
       <p style="font-size: 0.88rem; color: #444; margin-bottom: 16px; line-height: 1.7;">
@@ -498,58 +498,21 @@ function closeQuoteOverlay() {
 }
 
 // ============ EXPORT PDF ============
-async function exportPDF() {
+function exportPDF() {
   const customerName = document.getElementById('customer-name').value || 'KHACH_HANG';
   const fileName = generateFileName(customerName);
 
-  const element = document.getElementById('quote-preview');
-  const loading = document.getElementById('loading-overlay');
+  // Đổi title trang tạm thời để trình duyệt lấy làm tên file PDF khi in
+  const originalTitle = document.title;
+  document.title = fileName;
 
-  // Show loading
-  loading.classList.add('active');
+  // Dùng công cụ in (Save as PDF) của chính trình duyệt để PDF nét và không bị vỡ layout
+  window.print();
 
-  // Create a clone to render independently of the scrollable overlay
-  // This fixes html2canvas cutting off elements in scrollable divs
-  const cloneContainer = document.createElement('div');
-  cloneContainer.style.position = 'absolute';
-  cloneContainer.style.top = '-9999px';
-  cloneContainer.style.left = '0';
-  cloneContainer.style.width = '900px';
-  cloneContainer.style.background = '#fff';
-  
-  const clone = element.cloneNode(true);
-  clone.removeAttribute('id');
-  cloneContainer.appendChild(clone);
-  document.body.appendChild(cloneContainer);
-
-  const opt = {
-    margin: [10, 5, 10, 5],
-    filename: `${fileName}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      scrollY: 0,
-      windowWidth: 900
-    },
-    jsPDF: {
-      unit: 'mm',
-      format: 'a4',
-      orientation: 'portrait'
-    },
-    pagebreak: { mode: ['css', 'legacy'] }
-  };
-
-  try {
-    await html2pdf().set(opt).from(cloneContainer).save();
-  } catch (err) {
-    console.error('PDF export error:', err);
-    alert('Có lỗi khi xuất PDF. Vui lòng thử lại!');
-  } finally {
-    document.body.removeChild(cloneContainer);
-    loading.classList.remove('active');
-  }
+  // Trả lại title sau 1 giây
+  setTimeout(() => {
+    document.title = originalTitle;
+  }, 1000);
 }
 
 // ============ INIT ============
