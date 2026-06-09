@@ -805,6 +805,8 @@ body::before {
   body {
     background: #fff !important;
     color: #000 !important;
+    margin: 0;
+    padding: 0;
   }
 
   body::before {
@@ -812,15 +814,31 @@ body::before {
   }
 
   .app-header,
-  .main-container > .section-card,
+  .main-container,
   .quote-close-btn,
-  .quote-overlay {
+  .loading-overlay {
     display: none !important;
+  }
+
+  .quote-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .quote-overlay-inner {
+    max-width: 100% !important;
+    width: 100% !important;
   }
 
   #quote-preview {
     box-shadow: none !important;
     border-radius: 0 !important;
+    border: none !important;
+    margin: 0 !important;
   }
 }
 
